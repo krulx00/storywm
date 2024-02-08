@@ -41,6 +41,7 @@ async function compositeImage(imageInput: ArrayBuffer) {
   const output = await sharp(template)
     .composite([{ input: image }])
     .png()
+    .flatten({ background: { r: 255, g: 255, b: 255 } })
     .toBuffer();
   return output.toString("base64");
 }
@@ -53,7 +54,7 @@ export async function POST({ request }: any) {
     let postProcessImage = await compositeImage(await f.arrayBuffer());
     result.push(`data:image/jpeg;base64,${postProcessImage}`);
   }
-  return new Response(JSON.stringify({result}));
+  return new Response(JSON.stringify({ result }));
 
   // const file = await data.get("files[]");
   // let postProcessImage = await compositeImage(await file.arrayBuffer());
