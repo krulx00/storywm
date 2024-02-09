@@ -7,7 +7,7 @@ module.exports = {
 		// First application
 		{
 			name: 'storywm', // name of the process in PM2
-			script: 'build/index.js',
+			script: 'node -r dotenv/config build',
             watch:true,
             env:{
                 "PORT": 8000,
