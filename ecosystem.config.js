@@ -8,10 +8,12 @@ module.exports = {
 		{
 			name: 'storywm', // name of the process in PM2
 			script: 'build/index.js',
-			env_production: {
-				NODE_ENV: 'production',
-				PORT: 8000 // port the app will be launched on
-			}
+            watch:true,
+            env:{
+                "PORT": 8000,
+                "NODE_ENV":"development"
+            }
+			
 		}
 	],
 
@@ -28,7 +30,7 @@ module.exports = {
 			path: '/var/www/storywm/', // the path where you want the project to be
 			// code you want to run after the project has been pushed to your server
 			'post-deploy':
-				'npm install && npm run build && pm2 reload ecosystem.config.js --env production'
+				'npm install && npm run build && pm2 reload ecosystem.config.js'
 		}
 	}
 };
