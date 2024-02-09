@@ -2,8 +2,6 @@
   import axios from "axios";
   import { getContext } from "svelte";
   import { writable } from "svelte/store";
-  import fs from 'fs'
-  import archiver from 'archiver'
 
   let avatar, fileInput: any;
   let imageResultList: any[] = [];
@@ -46,13 +44,6 @@
     downloadLink.click();
   }
 
-  function createZip(){
-    let zipStream = fs.createWriteStream('image.zip');
-    let archive = archiver('zip');
-
-
-
-  }
 </script>
 
 <div class="container flex justify-center bg-red-100 min-w-full">
