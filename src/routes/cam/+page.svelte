@@ -2,6 +2,8 @@
   import axios from "axios";
   import { getContext } from "svelte";
   import { writable } from "svelte/store";
+  import fs from 'fs'
+  import archiver from 'archiver'
 
   let avatar, fileInput: any;
   let imageResultList: any[] = [];
@@ -12,7 +14,7 @@
     let fileList = e.target.files;
     try {
       const x = await axios.post("/cam", fileList);
-      imageResultList = [...imageResultList, x.data.result];
+      imageResultList = [...imageResultList, ...x.data.result];
       imageResultList.reverse();
     } catch (e) {
       errorMsg = e as string;
@@ -43,10 +45,18 @@
     downloadLink.download = `${index}.png`;
     downloadLink.click();
   }
+
+  function createZip(){
+    let zipStream = fs.createWriteStream('image.zip');
+    let archive = archiver('zip');
+
+
+
+  }
 </script>
 
-<div class="container flex justify-center items-center min-w-[fit] min-h-[fit]">
-  <div class="flex flex-wrap flex-col items-center gap-5 p-10">
+<div class="container flex justify-center bg-red-100 min-w-full">
+  <div class="flex flex-wrap flex-col items-center gap-5 p-10 w-full">
     <h1 class="text-2xl font-bold">Upload Image</h1>
     <button
       on:click={fileInput.click()}
@@ -59,7 +69,7 @@
         <div role="status">
           <svg
             aria-hidden="true"
-            class="inline w-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+            class="inline w-6 text-gray-200 animate-spin dark:text-gray-600 fill-blue-100"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +93,7 @@
       style="display:none"
       type="file"
       multiple
-      accept=".jpg, .jpeg, .png"
+      accept="image/*"
       on:change={(e) => onFileSelected(e)}
       bind:this={fileInput}
     />
@@ -94,7 +104,7 @@
   </div>
 </div>
 
-<div class="flex flex-row gap-4 bg-blue-400 w-[100%]">
+<div class="gap-4 bg-blue-400 w-[100%] grid grid-cols-5 ">
   {#each imageResultList as result, index}
     <div class="w-[300px] gap-2">
       <img class="w-[100%]" alt="A" src={result} />
